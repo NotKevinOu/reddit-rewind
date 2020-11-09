@@ -19,8 +19,29 @@ reddit.getSubmission('jpsm1a').expandReplies().then(com => {
 
 function sortComments(comments) {
 	comments.sort((a, b) => (a.created_utc - b.created_utc))
-	comments.forEach(com => {
-		console.log(com.body)
-	});
+	// comments.forEach(com => {
+	// 	console.log(com.body)
+	// });
+
+	for (var i = 0; i < comments.length - 1; i++) {
+		if (comments[i].body != '[deleted]') {
+			const date = new Date(comments[i].created_utc * 1000)
+			console.log("From: " + comments[i].author.name + " at " + date)
+			console.log(comments[i].body)
+			console.log()
+			console.log("======================================================================")
+			console.log()
+			const waitTime = comments[i + 1].created_utc - comments[i].created_utc
+			sleep(waitTime * 1000)
+		}
+	}
 }
 
+function sleep(milliseconds) {
+	var start = new Date().getTime();
+	for (var i = 0; i < 1e7; i++) {
+		if ((new Date().getTime() - start) > milliseconds) {
+			break;
+		}
+	}
+}

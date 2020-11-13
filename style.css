@@ -1,0 +1,23 @@
+p {
+	display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+	margin-inline-end: 0px;
+	margin: 0;
+	margin-bottom: 10px;
+	padding:5px;
+	background-color: rgb(9, 27, 41);
+}
+
+body {
+	height: 100vh;
+	background-color: rgb(13, 41, 63);
+	color: rgb(146, 146, 146);
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+}
+
+.comment-replies {
+	margin-left: 24px;
+}

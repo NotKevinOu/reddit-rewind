@@ -8,7 +8,6 @@
 
 require('dotenv').config()
 var snoowrap = require('snoowrap');
-const http = require('http');
 
 const hostname = '127.0.0.1';
 const port = 3000;
@@ -18,33 +17,20 @@ const reddit = new snoowrap({
 	clientSecret: process.env.CLIENT_SECRET,
 	refreshToken: process.env.REFRESH_TOKEN
 });
-var express = require('express');
-var app = express()
-var path = require('path');
 var waitTime = 0;
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
-
 const eze = 'jpsm1a'
 const england = 'jt21oz'
 
-let fs = require('fs');
-
-
-app.use(express.static(path.join(__dirname, '/public/')));
-app.get('/', function (req, res) {
-	res.sendFile(__dirname + '/index.html');
-});
-
-app.listen(3000, function () {
-	console.log("RUNNING REDDIT REWIND")
-});
+// function rewind() {
+// 	reddit.getSubmission(eze).expandReplies().then(com => {
+// 		sortComments(com.comments)
+// 	})
+// }
 
 
 reddit.getSubmission(eze).expandReplies().then(com => {
 	sortComments(com.comments)
 })
-
 function sortComments(comments) {
 	comments.sort((a, b) => (a.created_utc - b.created_utc))
 	for (var i = 0; i < comments.length; i++) {
@@ -77,6 +63,10 @@ function displayReply(comment, replies, i) {
 
 async function printComment(comments, i) {
 	if (comments[i].body != '[deleted]') {
+		var newComment = document.createElement('div');
+		newComment.className = "comment";
+		newComment.id = comments[i].link_id;
+
 		const date = new Date(comments[i].created_utc * 1000)
 		// prints user flair if available 
 		if (comments[i].author_flair_text == null) {
@@ -85,6 +75,22 @@ async function printComment(comments, i) {
 		} else {
 			console.log(`${comments[i].author.name} [${comments[i].author_flair_text}] | ${date}`)
 		}
+
+
+
+		// USERNAME COMMENT_HEADER
+		var newHeader = document.createElement('div');
+		newHeader.className = "comment-header";
+		newHeader.textContent = comments[i].author.name
+		newComment.appendChild(newHeader)
+		var newBody = document.createElement('div');
+		newHeader.className = "comment-body";
+		var newP = document.createElement('p');
+		newP.textContent = comments[i].body;
+		newBody.appendChild(newP)
+		newComment.appendChild(newBody)
+
+
 		console.log()
 		console.log(comments[i].body)
 
@@ -107,11 +113,16 @@ async function printComment(comments, i) {
 				console.log()
 				console.log(`     ====================`)
 			})
+
+
+			document.getElementsByName(comments[i].parent_id).appendChild(newComment);
+
 		}
 		console.log()
 		console.log(`==========================================`)
 		console.log()
 
+		document.getElementsByClassName('comment-list').appendChild(newComment);
 		// process all replies to the comment, if any
 		if (comments[i].replies.length > 0) {
 			for (var j = 0; j < comments[i].replies.length; j++) {

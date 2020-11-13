@@ -2,20 +2,20 @@
 	TODO:
 	- Start time
 	- Pause button
+	- Link enter
 	- HTML/CSS
 */
 
-const http = require('http');
+require('dotenv').config()
 var snoowrap = require('snoowrap');
 
 const hostname = '127.0.0.1';
 const port = 3000;
-
 const reddit = new snoowrap({
-	userAgent: 'Reddit Rewind',
-	clientId: 'H7q-VgszU43xdw',
-	clientSecret: '5yC84krS2y03k9KEtKsgThDe7vIaQA',
-	refreshToken: '14546719-MzirzYqb_MJuYLgJGrvVuDMcTPDg9A'
+	userAgent: process.env.USER_AGENT,
+	clientId: process.env.CLIENT_ID,
+	clientSecret: process.env.CLIENT_SECRET,
+	refreshToken: process.env.REFRESH_TOKEN
 });
 
 var waitTime = 0;
